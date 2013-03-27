@@ -1,0 +1,6 @@
+class <%= migration_class_name %> < ActiveRecord::Migration
+  def change
+    add_column :<%= name.pluralize.underscore.to_sym %>, :quality_score, :integer, :default => 0
+    add_column :<%= name.pluralize.underscore.to_sym %>, :failed_tests, :integer, :default => 0
+  end
+end
