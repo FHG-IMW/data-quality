@@ -32,6 +32,7 @@ module DataQuality
     module ExtendedClassMethods
 
       def quality_test(identifier,args={},&block)
+        identifier = "#{self.name}-#{identifier}"
         if block_given?
           self.quality_tests << DataQuality::QualityTest.new(identifier, args.merge(:block => block))
         else
