@@ -1,6 +1,6 @@
 # DataQuality
 
-This is a gem that makes your model data quality testable.
+This is a gem that makes your models data quality testable.
 You can define quality tests that specify the desired data quality.
 
 
@@ -38,7 +38,7 @@ end
 ```
 
 
-### :Adding DataQuality tests
+### Adding DataQuality tests
 
 Inside the `has_quality_tests` block you are now able to specify your QualityTests.
 You add a test by calling:
@@ -46,8 +46,8 @@ You add a test by calling:
 ```ruby
     quality_test "Identifier", :method => :method_name, :attr => :attribute_name, [:if => condition] # to add a predefined quality test
     quality_test "Identifier, :description => "Description", [:if => condition] do |object|
-        object.name.length > 3
-    end # to add a custom quality test
+        object.name.length > 3  # to add a custom quality test
+    end
 ```
 Currently there are 3 different types of predefined DataQuality test methods.
 
@@ -135,7 +135,23 @@ passed_test.state #=> returns the tests state :pass, :fail, :not_applicable
 passed_test.message #=> returns the message the test result answered
 ```
 
+If you want to test whether a Model uses DataQuality, run:
 
+```ruby
+Car.has_quality_tests?
+```
+
+Tests can have 3 states: `:pass` means that the test was successfull and `:fail` means the test failed the last time.
+
+The third state is `:not_applicable`. This state means, that the data checked by the test can't be applied to the tested object.
+You can assign that state to an object by calling:
+
+```ruby
+test=Car.quality_tests.first
+test.set_not_applicable_for Car.first
+```
+
+Now the first test will be ignored for the specified instance of car. This state will automatically switch to `:pass` if the test passes one time.
 
 
 
