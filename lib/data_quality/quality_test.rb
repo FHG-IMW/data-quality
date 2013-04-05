@@ -36,7 +36,7 @@ module DataQuality
 
         if method_name and attr
 
-          return eval("#{method_name.to_s}(object)")
+          return self.send(method_name,object)
         else
           raise "Arguments Missing: :method_name and :attr is needed"
         end
@@ -45,8 +45,8 @@ module DataQuality
 
     private
 
-    def not_empty(company)
-      raise NoMethodError.new("No method '#{attr}' for #{object.to_s}", object.to_s) unless object.class.instance_method_names.include?(attr.to_s)
+    def not_empty(object)
+      raise NoMethodError.new("No method '#{attr}' for #{object.to_s}", object.to_s) unless object.class.instance_methods.include?(attr)
 
       desc = description
       desc ||=  "\"#{object.class.human_attribute_name(attr)}\" should have a value"
@@ -68,7 +68,7 @@ module DataQuality
 
 
     def each_not_empty(object)
-      raise NoMethodError.new("No method '#{function}' for #{object.to_s}", object.to_s) unless object.class.instance_method_names.include?(function.to_s)
+      raise NoMethodError.new("No method '#{function}' for #{object.to_s}", object.to_s) unless object.class.instance_methods.include?(function)
 
       desc = description || "\"#{object.class.human_attribute_name(attr)}\" in all #{function.to_s.humanize} should have a value"
 
@@ -78,7 +78,7 @@ module DataQuality
 
         failed=[]
         objects.each do |object|
-          raise NoMethodError.new("No method '#{attr}' for #{object.to_s}", object.to_s) unless object.class.instance_method_names.include?(attr.to_s)
+          raise NoMethodError.new("No method '#{attr}' for #{object.to_s}", object.to_s) unless object.class.instance_methods.include?(attr)
 
           failed << object if object.read_attribute(attr).blank?
         end

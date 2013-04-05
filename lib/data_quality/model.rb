@@ -9,7 +9,7 @@ module DataQuality
 
     module InitialClassMethods
 
-      def has_quality_tests(&block)
+      def has_quality_tests
 
         class_attribute :quality_tests
         self.quality_tests=[]
@@ -19,7 +19,7 @@ module DataQuality
 
 
 
-        yield
+        yield if block_given?
 
         has_many :quality_test_states, :as => :testable, :class_name => 'DataQuality::QualityTestState'
         before_save :run_quality_tests
@@ -32,7 +32,6 @@ module DataQuality
     module ExtendedClassMethods
 
       def quality_test(identifier,args={},&block)
-        identifier = "#{self.name}-#{identifier}"
         if block_given?
           self.quality_tests << DataQuality::QualityTest.new(identifier, args.merge(:block => block))
         else
