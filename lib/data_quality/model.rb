@@ -25,6 +25,11 @@ module DataQuality
         before_save :run_quality_tests
 
       end
+
+      def has_quality_tests?
+          return self.quality_tests.any? if self.try(:quality_tests)
+          false
+      end
     end
 
 
@@ -65,7 +70,6 @@ module DataQuality
         self.save if save
 
         result
-
       end
 
 
