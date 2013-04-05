@@ -40,4 +40,15 @@ class TestDataQuality < Test::Unit::TestCase
     assert_equal 10, test_result.quality_score
 
   end
+
+  def test_set_not_applicable
+    company = Company.first
+    test=Company.quality_tests.first
+
+    test.set_not_applicable_for company
+
+    state=company.quality_test_states.find_by_identifier(test.identifier)
+
+    assert_equal true, state.not_applicable
+  end
 end

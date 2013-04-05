@@ -43,6 +43,14 @@ module DataQuality
       end
     end
 
+    def set_not_applicable_for object
+      if object.class.has_quality_tests?
+        object.quality_test_states.find_or_create_by_identifier(:identifier => identifier, :not_applicable => true) # if object.class.quality_tests.include?(self)
+      else
+        raise StandardError.new("Object does not include quality tests!")
+      end
+    end
+
     private
 
     def not_empty(object)
