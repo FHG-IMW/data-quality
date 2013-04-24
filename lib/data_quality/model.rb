@@ -27,8 +27,7 @@ module DataQuality
       end
 
       def has_quality_tests?
-          return self.quality_tests.any? if self.try(:quality_tests)
-          false
+          self.quality_tests.any? if self.respond_to?(:quality_tests)
       end
     end
 
