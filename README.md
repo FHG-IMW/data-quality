@@ -16,7 +16,7 @@ Execute:
 
 And then run:
 
-    rails g data_quality:data_quality :MyModel
+    rails g data_quality:data_quality MyModel
 
 This generator will generate the migrations that setup the table required for DataQuality and add the fields `failed_tests` and `quality_score` to MyModel
 This field must be added to every model that will use DataQuality tests.
@@ -44,7 +44,7 @@ Inside the `has_quality_tests` block you are now able to specify your QualityTes
 You add a test by calling:
 
 ```ruby
-    quality_test "Identifier", :method => :method_name, :attr => :attribute_name, [:if => condition] # to add a predefined quality test
+    quality_test "Identifier", :method_name => :method_name, :attr => :attribute_name, [:if => condition] # to add a predefined quality test
     quality_test "Identifier, :description => "Description", [:if => condition] do |object|
         object.name.length > 3  # to add a custom quality test
     end
@@ -56,7 +56,7 @@ Currently there are 3 different types of predefined DataQuality test methods.
 This test should be used if you want to test whether the content of a single attribute ist set/not blank
 
 ```ruby
-quality_test "Identifier", :method => :not_empty, :attr => :name
+quality_test "Identifier", :method_name => :not_empty, :attr => :name
 ```
 
 #### :each_not_empty
@@ -64,7 +64,7 @@ quality_test "Identifier", :method => :not_empty, :attr => :name
 This test should be used if your model has associated objects through `has_many` or `has_and_belongs_to_many`. The tests checks the specified attribute of every object associated through the defined association.
 **Note:** the `:function` parameter has to be set as it defines the association that shall be tested.
 ```ruby
-quality_test "Identifier", :method => :each_not_empty, :function => :wheels, :attr => :size
+quality_test "Identifier", :method_name => :each_not_empty, :function => :wheels, :attr => :size
 ```
 
 #### :not_expired
@@ -72,12 +72,12 @@ quality_test "Identifier", :method => :each_not_empty, :function => :wheels, :at
 This test should be called if you want to decrease the quality score of an object if the last update is expired
 **Note:** The `:since` parameter is optional. Default is 1.year.ago
 ```ruby
-quality_test "Identifier", :method => :not_expired, :since => 2.month.ago
+quality_test "Identifier", :method_name => :not_expired, :since => 2.month.ago
 ```
 
 #### block
 
-This method can be used if you want to specify custom quality conditions. The block should return either `true` which will make to test pass or `false` which will make it fail.
+This method can be used if you want to specify custom quality conditions. The block should return either `true` which will make the test pass or `false` which will make it fail.
 **Note:** The `:description` parameter is required, since there is no other way to build the test description automatically.
 ```ruby
 quality_test "Identifier", :description => "Test the car has 4 wheels" do |car|
@@ -88,7 +88,7 @@ end
 #### parameters
 
 * **"Identifier"** This parameter is needed to identify the quality test globally (always required, must be uniq)
-* **:method** Specifies the predefined test method `:not_empty :each_not_empty not_expired`
+* **:method_name** Specifies the predefined test method `:not_empty :each_not_empty not_expired`
 * **:attr** Specifies the model attribute that will be tested (required for `:each_not_empty` and `:not_empty`)
 * **:function** specifies the association that will be called before testing the attributes (required for `:each_not_empty`)
 * **:if** A bunch of code that will be called to eval if the test will be ignored (optional)
@@ -105,7 +105,7 @@ You can get the current quality score of an object by calling
 Car.first.quality_score #=> 10
 ```
 
-Currently every passed quality test increases the quality score by 3. Every test that was set to :not_applicable will increase it by 1
+Currently every passed quality test increases the quality score by 3. Every test that was set to :not_applicable will increase it by 1.
 
 If you want to run the DataQuality tests manually you can do this by calling:
 
@@ -113,7 +113,7 @@ If you want to run the DataQuality tests manually you can do this by calling:
 Car.first.run_quality_tests
 ```
 
-This will return an instance of `DataQuality::QualityTestResult` this object stores all infomration about the objects data quality
+This will return an instance of `DataQuality::QualityTestResult`. This object stores all information about the objects data quality.
 
 ```ruby
 result = Car.first.run_quality_tests(true) #=> true means that the result will be saved to the database
@@ -123,7 +123,7 @@ result.inapplicable_tests #=> returns an array with all tests that were previous
 result.quality_score #=> returns the objects quality_score
 ```
 
-You can inspect every single quality_test inside a result by accessing it through one of the QualityTestResult array:
+You can inspect every single quality_test inside a result by accessing it through one of the QualityTestResult arrays:
 
 ```ruby
 result = Car.first.run_quality_tests(true) #=> true means that the result will be saved to the database
