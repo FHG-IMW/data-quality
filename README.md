@@ -141,6 +141,12 @@ If you want to test whether a Model uses DataQuality, run:
 Car.has_quality_tests?
 ```
 
+The automatic update of quality data can be disabled with:
+```ruby
+Car.execute_quality_tests = false
+```
+
+
 Tests can have 3 states: `:pass` means that the test was successfull and `:fail` means the test failed the last time.
 
 The third state is `:not_applicable`. This state means, that the data checked by the test can't be applied to the tested object.
@@ -152,7 +158,5 @@ test.set_not_applicable_for Car.first
 ```
 
 Now the first test will be ignored for the specified instance of car. This state will automatically switch to `:pass` if the test passes one time.
-
-
 
 

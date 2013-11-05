@@ -12,6 +12,10 @@ module DataQuality
       def has_quality_tests
 
         class_attribute :quality_tests
+        class_attribute :execute_quality_tests
+
+        self.execute_quality_tests = false
+
         self.quality_tests=[]
 
         send :extend, ExtendedClassMethods
@@ -22,7 +26,7 @@ module DataQuality
         yield if block_given?
 
         has_many :quality_test_states, :as => :testable, :class_name => 'DataQuality::QualityTestState'
-        before_save :run_quality_tests
+        before_save -> { self.run_quality_tests if self.class.execute_quality_tests }
 
       end
 

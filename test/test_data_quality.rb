@@ -51,4 +51,12 @@ class TestDataQuality < Test::Unit::TestCase
 
     assert_equal true, state.not_applicable
   end
+
+
+  def test_quality_tests_can_be_disabled
+    Company.execute_quality_tests=false
+    company=Company.create :name => "TestTest"
+    assert_equal company.quality_score, 0
+    company.delete
+  end
 end
