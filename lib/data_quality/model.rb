@@ -14,7 +14,7 @@ module DataQuality
         class_attribute :quality_tests
         class_attribute :execute_quality_tests
 
-        self.execute_quality_tests = false
+        self.execute_quality_tests = true
 
         self.quality_tests=[]
 
