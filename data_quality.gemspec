@@ -6,8 +6,8 @@ require 'data_quality/version'
 Gem::Specification.new do |gem|
   gem.name          = "data_quality"
   gem.version       = DataQuality::VERSION
-  gem.authors       = ["Max Kießling"]
-  gem.email         = ["max.kiessling@moez.fraunhofer.de"]
+  gem.authors       = ["Max Kießling", "Michael Prilop"]
+  gem.email         = ["max.kiessling@moez.fraunhofer.de", "Michael.Prilop@moez.fraunhofer.de"]
   gem.description   = %q{Test the data quality}
   gem.summary       = %q{Test the quality of your data}
   gem.homepage      = ""
@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency "activerecord", "~> 4"
+  gem.add_dependency "activerecord", "~> 5"
 
   gem.add_development_dependency "sqlite3"
   gem.add_development_dependency "simplecov"
