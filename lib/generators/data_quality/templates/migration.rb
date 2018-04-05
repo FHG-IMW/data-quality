@@ -5,8 +5,6 @@ class CreateQualityTestStates < ActiveRecord::Migration
       t.boolean :not_applicable
       t.integer :testable_id
       t.string :testable_type
-
-      t.timestamps
     end
   end
 end

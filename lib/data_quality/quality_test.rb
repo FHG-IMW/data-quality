@@ -81,26 +81,20 @@ module DataQuality
       desc = description || "\"#{object.class.human_attribute_name(attr)}\" in all #{function.to_s.humanize} should have a value"
 
       objects=function ? object.send(function) : []
-
-      if objects.length > 0
-
-        failed=[]
-        objects.each do |object|
-          raise NoMethodError.new("No method '#{attr}' for #{object.to_s}", object.to_s) unless object.class.instance_methods.include?(attr)
-
-          failed << object if object.read_attribute(attr).blank?
-        end
-
-        if failed.empty?
-          return create_result(object,:pass,"All Values available",desc)
-        else
-          return create_result(object,:fail, "#{failed.length} Values not available", desc, failed)
-        end
-
+      
+      return create_result(object, :fail, "No Objects available", desc) if objects.size == 0
+      
+      failed=[]
+      objects.each do |one_of_many|
+        raise NoMethodError.new("No method '#{attr}' for #{one_of_many.to_s}", one_of_many.to_s) unless one_of_many.class.instance_methods.include?(attr)
+        failed << one_of_many if one_of_many.read_attribute(attr).blank?
       end
+      
+      return create_result(object,:pass,"All Values available",desc) if failed.empty?
+      create_result(object,:fail, "#{failed.length} Values not available", desc, failed)
 
-      create_result(object, :fail, "No Objects available", desc)
     end
+
 
 
     def not_expired(object)

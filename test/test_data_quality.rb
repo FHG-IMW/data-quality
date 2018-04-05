@@ -1,8 +1,13 @@
-require 'test/unit'
+require 'minitest'
 require 'test_helper'
 require 'data_quality'
 
-class TestDataQuality < Test::Unit::TestCase
+class TestDataQuality < MiniTest::Test
+  def test_for_proper_setup
+    test_state_obj = QualityTestState.new
+    assert test_state_obj.defined?(:created_at)
+  end
+  
   def test_companies_should_have_6_quality_tests
     assert_equal 6,Company.quality_tests.length
   end

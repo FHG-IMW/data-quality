@@ -17,8 +17,6 @@ ActiveRecord::Schema.define(:version => 1) do
     t.boolean :not_applicable
     t.integer :testable_id
     t.string :testable_type
-
-    t.timestamps
   end
 
   create_table "companies", :force => true do |t|
@@ -27,8 +25,6 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string   :end_of_operations
     t.integer  :quality_score,                    :default => 0
     t.integer  :failed_tests,                     :default => 0
-
-    t.timestamps
   end
 
   create_table "people", :force => true do |t|
@@ -37,8 +33,6 @@ ActiveRecord::Schema.define(:version => 1) do
     t.date     :employed_since
     t.integer  :quality_score,                    :default => 0
     t.integer  :failed_tests,                     :default => 0
-
-    t.timestamps
   end
 end
 
